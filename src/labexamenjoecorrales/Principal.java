@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -265,7 +266,7 @@ public class Principal extends javax.swing.JFrame implements Runnable {
     Thread hilo;
     double distancia;
     boolean collision = false;
-    
+    Random rd = new Random();
     
     @Override
     public void run() {
@@ -278,13 +279,24 @@ public class Principal extends javax.swing.JFrame implements Runnable {
                     Thread.sleep(5);
                 }
                 collision = true;
-                jpColision.setValue(0);
-                String nombrePlaneta = JOptionPane.showInputDialog(this, "Los planestas colisionaron!\nNuevo planeta descubierto!\nNombre del planeta: ");
+                int numeroRandomP = cP1.probabilidad();
+                System.out.println("Numero random de planeta: "+ numeroRandomP);
+//                int numeroRandom = rd.nextInt();
+//                System.out.println("Numero random: "+ numeroRandom);
+                if(numeroRandomP == 25 || numeroRandomP == 20) {
+                    jpColision.setValue(0);
+                    String nombrePlaneta = JOptionPane.showInputDialog(this, "Los planestas colisionaron!"
+                                                                        + "\nNuevo planeta descubierto!"
+                                                                        + "\nNombre del planeta: ");
+                }
             } catch(Exception ex) {
             }
         }
         collision = false;
     }
+    
+    Planeta cP1;
+    Planeta cP2;
     
     private void btnColisionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColisionarActionPerformed
         // TODO add your handling code here:
@@ -295,8 +307,8 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         String nPlaneta1 = txtPlaneta1.getText();
         String nPlaneta2 = txtPlaneta2.getText();
         
-        Planeta cP1 = buscarPlaneta(nPlaneta1);
-        Planeta cP2 = buscarPlaneta(nPlaneta2);
+        cP1 = buscarPlaneta(nPlaneta1);
+        cP2 = buscarPlaneta(nPlaneta2);
         
         distancia = Math.sqrt(((Math.pow(cP2.getCoorX(), 2)) - (Math.pow(cP1.getCoorX(), 2))) + (Math.pow(cP2.coorY, 2))-(Math.pow(cP1.coorY, 2)) );
         System.out.println("Distancia: "+distancia);
