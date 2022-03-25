@@ -261,7 +261,7 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         Planeta.setVisible(false);
     }//GEN-LAST:event_jtPlanetasFocusLost
 
-    Thread hilo = new Thread(this);
+    Thread hilo;
     
     
     @Override
@@ -271,6 +271,10 @@ public class Principal extends javax.swing.JFrame implements Runnable {
     
     private void btnColisionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColisionarActionPerformed
         // TODO add your handling code here:
+        hilo = new Thread(this);
+        hilo.start();
+        
+        
         String nPlaneta1 = txtPlaneta1.getText();
         String nPlaneta2 = txtPlaneta2.getText();
         
