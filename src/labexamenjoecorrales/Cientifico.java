@@ -1,8 +1,9 @@
 package labexamenjoecorrales;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cientifico {
+public class Cientifico implements Serializable {
     protected String nombre;
     protected ArrayList<Planeta> planetas;
     
@@ -31,6 +32,6 @@ public class Cientifico {
 
     @Override
     public String toString() {
-        return "Cientifico{" + "nombre=" + nombre + '}';
+        return  nombre;
     }
 }

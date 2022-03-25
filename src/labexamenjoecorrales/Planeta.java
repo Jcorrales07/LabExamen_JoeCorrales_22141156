@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package labexamenjoecorrales;
 
 import java.io.Serializable;
 import java.util.Random;
 
-/**
- *
- * @author Corra
- */
 public abstract class Planeta implements Serializable {
     protected Random rd = new Random();
     protected String nombre;

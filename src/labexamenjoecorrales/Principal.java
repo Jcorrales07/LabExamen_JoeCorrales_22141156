@@ -1,26 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package labexamenjoecorrales;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-/**
- *
- * @author Corra
- */
 public class Principal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Principal
-     */
     public Principal() {
         initComponents();
+        this.setLocationRelativeTo(null);
         llenarPlanetasPublicos();
-        
+        llenarComboBoxCientifico();
+        actualizarComboxBoxCientifico();
     }
 
     @SuppressWarnings("unchecked")
@@ -34,7 +35,7 @@ public class Principal extends javax.swing.JFrame {
         txtPlaneta1 = new javax.swing.JTextField();
         txtPlaneta2 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jcCientificos = new javax.swing.JComboBox<>();
+        cbCientificos = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         txtNombreCientifico = new javax.swing.JTextField();
         jcheckboxPPublicos = new javax.swing.JCheckBox();
@@ -49,15 +50,20 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setText("Cientificos: ");
 
-        jcCientificos.addActionListener(new java.awt.event.ActionListener() {
+        cbCientificos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcCientificosActionPerformed(evt);
+                cbCientificosActionPerformed(evt);
             }
         });
 
         jLabel2.setText("Nombre");
 
         jcheckboxPPublicos.setText("Publicos");
+        jcheckboxPPublicos.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jcheckboxPPublicosStateChanged(evt);
+            }
+        });
         jcheckboxPPublicos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcheckboxPPublicosActionPerformed(evt);
@@ -65,6 +71,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnAddCientifico.setText("Añadir Cientifico");
+        btnAddCientifico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCientificoActionPerformed(evt);
+            }
+        });
 
         btnColisionar.setText("Colisionar");
 
@@ -89,7 +100,7 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(btnAddCientifico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtPlaneta1)
                                     .addComponent(txtPlaneta2)
-                                    .addComponent(jcCientificos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbCientificos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtNombreCientifico, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(btnColisionar, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -115,7 +126,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jcCientificos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbCientificos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -156,10 +167,70 @@ public class Principal extends javax.swing.JFrame {
         modelo.setRoot(root);
     }//GEN-LAST:event_jcheckboxPPublicosActionPerformed
 
-    private void jcCientificosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcCientificosActionPerformed
+    private void cbCientificosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCientificosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jcCientificosActionPerformed
+        
+    }//GEN-LAST:event_cbCientificosActionPerformed
 
+    private void btnAddCientificoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCientificoActionPerformed
+        // TODO add your handling code here:
+        String nombre = txtNombreCientifico.getText();
+        
+        if(nombre != null) {
+            cientificos.add(new Cientifico(nombre));
+            guardarCientificos();
+        } else JOptionPane.showMessageDialog(this, "Campo: Nombre Vacio!");
+        
+    }//GEN-LAST:event_btnAddCientificoActionPerformed
+
+    private void jcheckboxPPublicosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jcheckboxPPublicosStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcheckboxPPublicosStateChanged
+
+    private void guardarCientificos() {
+        try {
+            
+            FileOutputStream fos = new FileOutputStream("./cientificos.jco");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            
+            for(Cientifico c : cientificos) 
+                oos.writeObject(c);
+            
+            actualizarComboxBoxCientifico();
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    private void llenarComboBoxCientifico() {
+        try {
+            
+            FileInputStream fis = new FileInputStream("./cientificos.jco");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            
+            Cientifico cientifico;
+            
+            while( (cientifico = (Cientifico) ois.readObject()) != null)
+                cientificos.add(cientifico);
+            
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    private void actualizarComboxBoxCientifico() {
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) cbCientificos.getModel();
+        modelo.removeAllElements();
+        
+        for(Cientifico c : cientificos)
+            modelo.addElement(c);
+    }
+    
+    
     private void llenarPlanetasPublicos() {
         Planeta p = new Terrestre(5000, 13000, "Mercurio", 400, 300);
         Planeta pl = new Terrestre(100000, 15000, "Venus", 640, 260);
@@ -178,8 +249,6 @@ public class Principal extends javax.swing.JFrame {
         planetas.add(planeta);
         planetas.add(planetaa);
     }
-    
-    
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -216,11 +285,11 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCientifico;
     private javax.swing.JButton btnColisionar;
+    private javax.swing.JComboBox<String> cbCientificos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> jcCientificos;
     private javax.swing.JCheckBox jcheckboxPPublicos;
     private javax.swing.JProgressBar jpColision;
     private javax.swing.JTree jtPlanetas;
@@ -229,4 +298,5 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField txtPlaneta2;
     // End of variables declaration//GEN-END:variables
     public ArrayList<Planeta> planetas = new ArrayList<>();
+    public ArrayList<Cientifico> cientificos = new ArrayList<>();
 }
