@@ -8,14 +8,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-public class Principal extends javax.swing.JFrame {
+public class Principal extends javax.swing.JFrame implements Runnable {
 
     public Principal() {
         initComponents();
@@ -46,7 +44,7 @@ public class Principal extends javax.swing.JFrame {
         btnAddCientifico = new javax.swing.JButton();
         btnColisionar = new javax.swing.JButton();
 
-        Planeta1.setText("jMenuItem1");
+        Planeta1.setText("Planeta 1");
         Planeta1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Planeta1ActionPerformed(evt);
@@ -54,7 +52,7 @@ public class Principal extends javax.swing.JFrame {
         });
         Planeta.add(Planeta1);
 
-        Planeta2.setText("Planeta2");
+        Planeta2.setText("Planeta 2");
         Planeta2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Planeta2ActionPerformed(evt);
@@ -67,6 +65,9 @@ public class Principal extends javax.swing.JFrame {
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Planetas");
         jtPlanetas.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jtPlanetas.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtPlanetasFocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jtPlanetasFocusLost(evt);
             }
@@ -82,6 +83,10 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jtPlanetas);
+
+        txtPlaneta1.setEditable(false);
+
+        txtPlaneta2.setEditable(false);
 
         jLabel1.setText("Cientificos: ");
 
@@ -113,6 +118,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnColisionar.setText("Colisionar");
+        btnColisionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnColisionarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,14 +152,14 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(jpColision, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(jpColision, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
+                .addComponent(jpColision, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -221,32 +231,67 @@ public class Principal extends javax.swing.JFrame {
     private void jcheckboxPPublicosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jcheckboxPPublicosStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_jcheckboxPPublicosStateChanged
-
+    
+    String subPlaneta;
     private void jtPlanetasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtPlanetasMouseClicked
         // TODO add your handling code here:
-        
-        
+        Planeta.setVisible(true);
+        String planeta = jtPlanetas.getSelectionPath().toString();
+        subPlaneta = planeta.substring(11, planeta.length()-1);
+        System.out.println(subPlaneta);
     }//GEN-LAST:event_jtPlanetasMouseClicked
 
     private void jtPlanetasValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jtPlanetasValueChanged
         // TODO add your handling code here:
-        Planeta.setVisible(true);
         Planeta.setLocation(getPointerInfo().getLocation());
     }//GEN-LAST:event_jtPlanetasValueChanged
 
     private void Planeta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Planeta1ActionPerformed
         // TODO add your handling code here:
-        
+        txtPlaneta1.setText(subPlaneta);
     }//GEN-LAST:event_Planeta1ActionPerformed
 
     private void Planeta2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Planeta2ActionPerformed
         // TODO add your handling code here:
+        txtPlaneta2.setText(subPlaneta);
     }//GEN-LAST:event_Planeta2ActionPerformed
 
     private void jtPlanetasFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtPlanetasFocusLost
         // TODO add your handling code here:
         Planeta.setVisible(false);
     }//GEN-LAST:event_jtPlanetasFocusLost
+
+    Thread hilo = new Thread(this);
+    
+    
+    @Override
+    public void run() {
+
+    }
+    
+    private void btnColisionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColisionarActionPerformed
+        // TODO add your handling code here:
+        String nPlaneta1 = txtPlaneta1.getText();
+        String nPlaneta2 = txtPlaneta2.getText();
+        
+        Planeta cPlaneta1 = buscarPlaneta(nPlaneta1);
+        Planeta cPlaneta2 = buscarPlaneta(nPlaneta2);
+        
+    }//GEN-LAST:event_btnColisionarActionPerformed
+
+    private Planeta buscarPlaneta(String planeta) {
+        for(Planeta p : planetas) {
+            if(p.getNombre().equals(planeta)) 
+                return p;
+        }
+        return null;
+    }
+    
+    
+    private void jtPlanetasFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtPlanetasFocusGained
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jtPlanetasFocusGained
 
     private void guardarCientificos() {
         try {
@@ -291,22 +336,14 @@ public class Principal extends javax.swing.JFrame {
     
     
     private void llenarPlanetasPublicos() {
-        Planeta p = new Terrestre(5000, 13000, "Mercurio", 400, 300);
-        Planeta pl = new Terrestre(100000, 15000, "Venus", 640, 260);
-        Planeta pla = new Terrestre(140000, 17000, "Tierra", 760, 570);
-        Planeta plan = new Terrestre(90000, 12000, "Marte", 360, 360);
-        Planeta plane = new Gaseoso(400000, 40000, "Jupiter", 340, 310);
-        Planeta planet = new Gaseoso(300000, 30000, "Saturno", 560, 450);
-        Planeta planeta = new Gaseoso(200000, 20000, "Urano", 670, 690);
-        Planeta planetaa = new Gaseoso(200000, 20000, "Neptuno", 840, 900);
-        planetas.add(p);
-        planetas.add(pl);
-        planetas.add(pla);
-        planetas.add(plan);
-        planetas.add(plane);
-        planetas.add(planet);
-        planetas.add(planeta);
-        planetas.add(planetaa);
+        planetas.add(new Terrestre(5000, 13000, "Mercurio", 400, 300));
+        planetas.add(new Terrestre(100000, 15000, "Venus", 640, 260));
+        planetas.add(new Terrestre(140000, 17000, "Tierra", 760, 570));
+        planetas.add(new Terrestre(90000, 12000, "Marte", 360, 360));
+        planetas.add(new Gaseoso(400000, 40000, "Jupiter", 340, 310));
+        planetas.add(new Gaseoso(300000, 30000, "Saturno", 560, 450));
+        planetas.add(new Gaseoso(200000, 20000, "Urano", 670, 690));
+        planetas.add(new Gaseoso(200000, 20000, "Neptuno", 840, 900));
     }
     
     public static void main(String args[]) {
@@ -361,4 +398,6 @@ public class Principal extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     public ArrayList<Planeta> planetas = new ArrayList<>();
     public ArrayList<Cientifico> cientificos = new ArrayList<>();
+
+    
 }
