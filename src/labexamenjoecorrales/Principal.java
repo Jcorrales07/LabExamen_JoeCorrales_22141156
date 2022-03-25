@@ -1,5 +1,6 @@
 package labexamenjoecorrales;
 
+import java.awt.Color;
 import static java.awt.MouseInfo.getPointerInfo;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -262,11 +263,24 @@ public class Principal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jtPlanetasFocusLost
 
     Thread hilo;
+    double distancia;
+    boolean collision = false;
     
     
     @Override
     public void run() {
-
+        jpColision.setForeground(Color.ORANGE);
+        
+        while(!collision) {
+            try {
+                for (int i = 0; i < (int) distancia+1; i++) {
+                    jpColision.setValue(i);
+                    Thread.sleep(5);
+                }
+            } catch(Exception ex) {
+                
+            }
+        }
     }
     
     private void btnColisionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColisionarActionPerformed
@@ -278,9 +292,10 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         String nPlaneta1 = txtPlaneta1.getText();
         String nPlaneta2 = txtPlaneta2.getText();
         
-        Planeta cPlaneta1 = buscarPlaneta(nPlaneta1);
-        Planeta cPlaneta2 = buscarPlaneta(nPlaneta2);
+        Planeta cP1 = buscarPlaneta(nPlaneta1);
+        Planeta cP2 = buscarPlaneta(nPlaneta2);
         
+        distancia = Math.sqrt(((Math.pow(cP2.getCoorX(), 2)) - (Math.pow(cP1.getCoorX(), 2))) + (Math.pow(cP2.coorY, 2))-(Math.pow(cP1.coorY, 2)) );
     }//GEN-LAST:event_btnColisionarActionPerformed
 
     private Planeta buscarPlaneta(String planeta) {
@@ -348,6 +363,8 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         planetas.add(new Gaseoso(300000, 30000, "Saturno", 560, 450));
         planetas.add(new Gaseoso(200000, 20000, "Urano", 670, 690));
         planetas.add(new Gaseoso(200000, 20000, "Neptuno", 840, 900));
+        //HEY BUENAS A TODOS GUAPISIMOSSSS AQUI VEGETTA 777
+        planetas.add(new Terrestre(777777, 7777777, "Planeta Vegetta", 777, 777));
     }
     
     public static void main(String args[]) {
