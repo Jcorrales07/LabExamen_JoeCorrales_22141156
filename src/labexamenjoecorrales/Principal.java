@@ -1,5 +1,6 @@
 package labexamenjoecorrales;
 
+import static java.awt.MouseInfo.getPointerInfo;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,6 +29,9 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Planeta = new javax.swing.JPopupMenu();
+        Planeta1 = new javax.swing.JMenuItem();
+        Planeta2 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jpColision = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -42,10 +46,41 @@ public class Principal extends javax.swing.JFrame {
         btnAddCientifico = new javax.swing.JButton();
         btnColisionar = new javax.swing.JButton();
 
+        Planeta1.setText("jMenuItem1");
+        Planeta1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Planeta1ActionPerformed(evt);
+            }
+        });
+        Planeta.add(Planeta1);
+
+        Planeta2.setText("Planeta2");
+        Planeta2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Planeta2ActionPerformed(evt);
+            }
+        });
+        Planeta.add(Planeta2);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Planetas");
         jtPlanetas.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jtPlanetas.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtPlanetasFocusLost(evt);
+            }
+        });
+        jtPlanetas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtPlanetasMouseClicked(evt);
+            }
+        });
+        jtPlanetas.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                jtPlanetasValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtPlanetas);
 
         jLabel1.setText("Cientificos: ");
@@ -187,6 +222,32 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jcheckboxPPublicosStateChanged
 
+    private void jtPlanetasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtPlanetasMouseClicked
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_jtPlanetasMouseClicked
+
+    private void jtPlanetasValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jtPlanetasValueChanged
+        // TODO add your handling code here:
+        Planeta.setVisible(true);
+        Planeta.setLocation(getPointerInfo().getLocation());
+    }//GEN-LAST:event_jtPlanetasValueChanged
+
+    private void Planeta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Planeta1ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_Planeta1ActionPerformed
+
+    private void Planeta2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Planeta2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Planeta2ActionPerformed
+
+    private void jtPlanetasFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtPlanetasFocusLost
+        // TODO add your handling code here:
+        Planeta.setVisible(false);
+    }//GEN-LAST:event_jtPlanetasFocusLost
+
     private void guardarCientificos() {
         try {
             
@@ -212,14 +273,12 @@ public class Principal extends javax.swing.JFrame {
             
             Cientifico cientifico;
             
-            while( (cientifico = (Cientifico) ois.readObject()) != null)
+            while( (cientifico = (Cientifico) ois.readObject()) != null) {
+                System.out.println(cientifico);
                 cientificos.add(cientifico);
+            }
             
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex);
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println(ex);
-        }
+        } catch (IOException | ClassNotFoundException ex) {}
     }
     
     private void actualizarComboxBoxCientifico() {
@@ -283,6 +342,9 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu Planeta;
+    private javax.swing.JMenuItem Planeta1;
+    private javax.swing.JMenuItem Planeta2;
     private javax.swing.JButton btnAddCientifico;
     private javax.swing.JButton btnColisionar;
     private javax.swing.JComboBox<String> cbCientificos;
