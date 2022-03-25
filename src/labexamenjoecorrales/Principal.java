@@ -277,10 +277,13 @@ public class Principal extends javax.swing.JFrame implements Runnable {
                     jpColision.setValue(i);
                     Thread.sleep(5);
                 }
+                collision = true;
+                jpColision.setValue(0);
+                String nombrePlaneta = JOptionPane.showInputDialog(this, "Los planestas colisionaron!\nNuevo planeta descubierto!\nNombre del planeta: ");
             } catch(Exception ex) {
-                
             }
         }
+        collision = false;
     }
     
     private void btnColisionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColisionarActionPerformed
@@ -296,6 +299,7 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         Planeta cP2 = buscarPlaneta(nPlaneta2);
         
         distancia = Math.sqrt(((Math.pow(cP2.getCoorX(), 2)) - (Math.pow(cP1.getCoorX(), 2))) + (Math.pow(cP2.coorY, 2))-(Math.pow(cP1.coorY, 2)) );
+        System.out.println("Distancia: "+distancia);
     }//GEN-LAST:event_btnColisionarActionPerformed
 
     private Planeta buscarPlaneta(String planeta) {
