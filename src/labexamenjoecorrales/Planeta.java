@@ -10,13 +10,15 @@ import java.io.Serializable;
  *
  * @author Corra
  */
-public class Planeta implements Serializable {
+public abstract class Planeta implements Serializable {
     protected String nombre;
     protected double tamannio;
     protected double peso;
     protected double coorX;
     protected double coorY;
 
+    public Planeta() {}
+    
     public Planeta(String nombre, double tamannio, double peso, double coorX, double coorY) {
         this.nombre = nombre;
         this.tamannio = tamannio;
@@ -69,4 +71,6 @@ public class Planeta implements Serializable {
     public String toString() {
         return "Planeta{" + "nombre=" + nombre + ", tamannio=" + tamannio + ", peso=" + peso + ", coorX=" + coorX + ", coorY=" + coorY + '}';
     }
+    
+    public abstract int probabilidad();
 }
