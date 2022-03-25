@@ -214,15 +214,25 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         modelo.setRoot(root);
     }//GEN-LAST:event_jcheckboxPPublicosActionPerformed
 
+    Cientifico cientificoSeleccionado;
     private void cbCientificosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCientificosActionPerformed
         // TODO add your handling code here:
+        cientificoSeleccionado = (Cientifico) cbCientificos.getSelectedItem();
         
+        DefaultTreeModel modelo = (DefaultTreeModel) jtPlanetas.getModel();
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Planetas");
+        
+        for (Planeta p : cientificoSeleccionado.planetas) {
+            DefaultMutableTreeNode hojaPlaneta = new DefaultMutableTreeNode(p.getNombre());
+            root.add(hojaPlaneta);
+        }
+        modelo.setRoot(root);
     }//GEN-LAST:event_cbCientificosActionPerformed
 
     private void btnAddCientificoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCientificoActionPerformed
         // TODO add your handling code here:
         String nombre = txtNombreCientifico.getText();
-        
+        txtNombreCientifico.setText("");
         if(nombre != null) {
             cientificos.add(new Cientifico(nombre));
             guardarCientificos();
@@ -278,6 +288,7 @@ public class Principal extends javax.swing.JFrame implements Runnable {
                     jpColision.setValue(i);
                     Thread.sleep(5);
                 }
+                
                 collision = true;
                 int numeroRandomP = cP1.probabilidad();
                 System.out.println("Numero random de planeta: "+ numeroRandomP);
@@ -285,19 +296,39 @@ public class Principal extends javax.swing.JFrame implements Runnable {
 //                System.out.println("Numero random: "+ numeroRandom);
                 if(numeroRandomP == 25 || numeroRandomP == 20) {
                     jpColision.setValue(0);
-                    String nombrePlaneta = JOptionPane.showInputDialog(this, "Los planestas colisionaron!"
-                                                                        + "\nNuevo planeta descubierto!"
-                                                                        + "\nNombre del planeta: ");
+                    String nombreP = JOptionPane.showInputDialog(this,
+                                                "Los planestas colisionaron!"
+                                                + "\nNuevo planeta descubierto!"
+                                                + "\nNombre del planeta: ");
+                    
+                    double tamano = (cP1.getTamannio()+ cP2.getTamannio())/2;
+                    double peso = (cP1.getPeso() + cP2.getPeso())/2;
+                    double xp = (cP1.getCoorX() + cP2.getCoorX())/2;
+                    double yp = (cP1.getCoorX() + cP2.getCoorX())/2;
+                    
+                    Planeta pNuevo;
+                    if(cP1 instanceof Terrestre) {
+                        pNuevo = new Terrestre(tamano, peso, nombreP, xp, yp);
+                    } else {
+                        pNuevo = new Gaseoso(tamano, peso, nombreP, xp, yp);
+                    }
+                    
+                    planetas.add(pNuevo);
+                    cientificoSeleccionado.planetas.add(pNuevo);
+                    
+                    System.out.println("\n\nPlanetas de: "+ cientificoSeleccionado.getNombre());
+                    
+                    for(Planeta p: cientificoSeleccionado.planetas) {
+                        System.out.println(p.getNombre());
+                    }
                 }
-            } catch(Exception ex) {
-            }
+            } catch(Exception ex) {}
         }
         collision = false;
     }
     
     Planeta cP1;
     Planeta cP2;
-    
     private void btnColisionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColisionarActionPerformed
         // TODO add your handling code here:
         hilo = new Thread(this);
@@ -318,6 +349,14 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         for(Planeta p : planetas) {
             if(p.getNombre().equals(planeta)) 
                 return p;
+        }
+        return null;
+    }
+    
+    private Cientifico buscarCientifico(String nombre) {
+        for(Cientifico c : cientificos) {
+            if(c.getNombre().equals(nombre)) 
+                return c;
         }
         return null;
     }
@@ -379,6 +418,7 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         planetas.add(new Gaseoso(300000, 30000, "Saturno", 560, 450));
         planetas.add(new Gaseoso(200000, 20000, "Urano", 670, 690));
         planetas.add(new Gaseoso(200000, 20000, "Neptuno", 840, 900));
+        
         //HEY BUENAS A TODOS GUAPISIMOSSSS AQUI VEGETTA 777
         planetas.add(new Terrestre(777777, 7777777, "Planeta Vegetta", 777, 777));
     }
