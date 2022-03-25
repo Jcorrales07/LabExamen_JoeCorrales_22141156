@@ -23,6 +23,9 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         llenarPlanetasPublicos();
         llenarComboBoxCientifico();
         actualizarComboxBoxCientifico();
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Planetas");
+        DefaultTreeModel modelo = (DefaultTreeModel) jtPlanetas.getModel();
+        modelo.setRoot(root);
     }
 
     @SuppressWarnings("unchecked")
@@ -45,6 +48,7 @@ public class Principal extends javax.swing.JFrame implements Runnable {
         jcheckboxPPublicos = new javax.swing.JCheckBox();
         btnAddCientifico = new javax.swing.JButton();
         btnColisionar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         Planeta1.setText("Planeta 1");
         Planeta1.addActionListener(new java.awt.event.ActionListener() {
@@ -153,7 +157,11 @@ public class Principal extends javax.swing.JFrame implements Runnable {
                                 .addComponent(btnColisionar, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addComponent(jpColision, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jpColision, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(8, 8, 8)))))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -161,7 +169,9 @@ public class Principal extends javax.swing.JFrame implements Runnable {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addComponent(jpColision, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addGap(58, 58, 58)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -347,8 +357,10 @@ public class Principal extends javax.swing.JFrame implements Runnable {
 
     private Planeta buscarPlaneta(String planeta) {
         for(Planeta p : planetas) {
-            if(p.getNombre().equals(planeta)) 
+            if(p.getNombre().equals(planeta))  {
+                System.out.println("Planeta: "+ p.getNombre());
                 return p;
+            }
         }
         return null;
     }
@@ -464,6 +476,7 @@ public class Principal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JComboBox<String> cbCientificos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JCheckBox jcheckboxPPublicos;
@@ -475,6 +488,4 @@ public class Principal extends javax.swing.JFrame implements Runnable {
     // End of variables declaration//GEN-END:variables
     public ArrayList<Planeta> planetas = new ArrayList<>();
     public ArrayList<Cientifico> cientificos = new ArrayList<>();
-
-    
 }
