@@ -5,12 +5,14 @@
 package labexamenjoecorrales;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  *
  * @author Corra
  */
 public abstract class Planeta implements Serializable {
+    protected Random rd = new Random();
     protected String nombre;
     protected double tamannio;
     protected double peso;
@@ -19,10 +21,10 @@ public abstract class Planeta implements Serializable {
 
     public Planeta() {}
     
-    public Planeta(String nombre, double tamannio, double peso, double coorX, double coorY) {
-        this.nombre = nombre;
+    public Planeta(double tamannio, double peso, String nombre, double coorX, double coorY) {
         this.tamannio = tamannio;
         this.peso = peso;
+        this.nombre = nombre;
         this.coorX = coorX;
         this.coorY = coorY;
     }
